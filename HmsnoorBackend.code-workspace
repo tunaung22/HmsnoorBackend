@@ -1,0 +1,42 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		// EDITOR
+		// ---------------------------------------------------
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.rulers": [
+			80
+		],
+		"editor.minimap.enabled": false,
+		"workbench.editor.enablePreview": false,
+		"editor.fontLigatures": true,
+		"editor.fontFamily": "Fira Code, Menlo, Monaco, 'Courier New', monospace",
+		"editor.fontSize": 14,
+		"editor.letterSpacing": 0.25,
+		"editor.lineHeight": 22,
+		"editor.renderWhitespace": "trailing",
+		"editor.formatOnSave": true,
+		"editor.formatOnPaste": true,
+		"editor.suggestSelection": "first",
+		"editor.tabCompletion": "on",
+		"editor.wordWrap": "off",
+		// FORMATTERS
+		// ---------------------------------------------------
+		"[csharp]": {
+			"editor.defaultFormatter": "ms-dotnettools.csharp",
+			"editor.maxTokenizationLineLength": 2500,
+			"editor.inlineSuggest.suppressSuggestions": false
+		},
+		"[json]": {
+			"editor.defaultFormatter": "vscode.json-language-features",
+			"editor.quickSuggestions": {
+				"strings": true
+			},
+			"editor.suggest.insertMode": "replace"
+		},
+	}
+}
