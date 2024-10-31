@@ -1,3 +1,3 @@
 # README
 
-  Hmsnoor Backend
+  API Backend for Hmsnoor sale module
