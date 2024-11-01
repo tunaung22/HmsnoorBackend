@@ -155,7 +155,7 @@ public class TransactionSaleConfiguration : IEntityTypeConfiguration<Transaction
         builder.Property(e => e.RemainKs)
             .HasColumnName("RemainKS")
             .HasColumnType("money");
-        
+
         builder.Property(e => e.RefundDollar)
             .HasColumnName("RefundDollar")
             .HasColumnType("money");
@@ -175,7 +175,7 @@ public class TransactionSaleConfiguration : IEntityTypeConfiguration<Transaction
             .HasMaxLength(500);
 
         builder.Property(e => e.BankChargesDollar)
-            .HasColumnName("BankChargesKs")
+            .HasColumnName("BankChargesDollar")
             .HasColumnType("money");
 
         builder.Property(e => e.BankChargesKs)
