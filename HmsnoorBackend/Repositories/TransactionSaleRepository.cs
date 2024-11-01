@@ -4,7 +4,6 @@ using HmsnoorBackend.Dtos;
 using HmsnoorBackend.Dtos.DtoMappers;
 using HmsnoorBackend.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 namespace HmsnoorBackend.Repositories;
