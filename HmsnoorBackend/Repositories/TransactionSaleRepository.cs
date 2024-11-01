@@ -4,6 +4,7 @@ using HmsnoorBackend.Dtos;
 using HmsnoorBackend.Dtos.DtoMappers;
 using HmsnoorBackend.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 namespace HmsnoorBackend.Repositories;
@@ -134,12 +135,55 @@ public class TransactionSaleRepository : ITransactionSaleRepository
 
     public async Task<List<TransactionSale>> GetAllTransactionSalesAsync(string salesType)
     {
-        Log.Information("TransactionSaleRepository");
+        Log.Information("TransactionSaleRepository, salesType param: {type}", salesType);
         try
         {
-            var invoiceList = await _context.TransactionSales
-                .FromSql($"SELECT * FROM TransactionSales WHERE SalesType = {salesType}")
-                .ToListAsync();
+            var q = _context.TransactionSales
+                .Where(i => i.SalesType == salesType)
+                .Select(i => new TransactionSale
+                {
+                    SalesType = i.SalesType,
+                    InvoiceNo = i.InvoiceNo,
+                    InvoiceDate = i.InvoiceDate,
+                    VoucherNo = i.VoucherNo,
+                    Currency = i.Currency,
+                    ReceivableType = i.ReceivableType,
+                    RegistrationNo = i.RegistrationNo,
+                    Remark = i.Remark,
+                    Total = i.Total,
+                    DiscountPers = i.DiscountPers,
+                    DiscountAmt = i.DiscountAmt,
+                    TaxPers = i.TaxPers,
+                    TaxAmount = i.TaxAmount,
+                    ServicePers = i.ServicePers,
+                    ServiceAmount = i.ServiceAmount,
+                    NetAmount = i.NetAmount,
+                    CashierId = i.CashierId,
+                    CreateUserId = i.CreateUserId,
+                    CreateDate = i.CreateDate,
+                    ModifyUserId = i.ModifyUserId,
+                    ModifyDate = i.ModifyDate,
+                    PaidDate = i.PaidDate,
+                    ServiceTaxPers = i.ServiceTaxPers,
+                    ServiceTaxAmount = i.ServiceTaxAmount,
+                    IsPaidBill = i.IsPaidBill,
+                    MemberCardNo = i.MemberCardNo,
+                    StaffName = i.StaffName,
+                    CashPaymentDollar = i.CashPaymentDollar,
+                    CashPaymentKs = i.CashPaymentKs,
+                    CardPaymentDollar = i.CardPaymentDollar,
+                    CardPaymentKs = i.CardPaymentKs,
+                    RemainDollar = i.RemainDollar,
+                    RemainKs = i.RemainKs,
+                    RefundDollar = i.RefundDollar,
+                    RefundKs = i.RefundKs,
+                    CardNo = i.CardNo,
+                    CardType = i.CardType,
+                    BankChargesDollar = i.BankChargesDollar,
+                    BankChargesKs = i.BankChargesKs,
+                    BottleCharges = i.BottleCharges,
+                });
+            var invoiceList = await q.ToListAsync();
 
             // var result = TransactionSalesMapper.ToGetDto(invoiceList);
             return invoiceList;
