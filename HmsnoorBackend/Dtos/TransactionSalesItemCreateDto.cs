@@ -8,7 +8,7 @@ public class TransactionSalesItemCreateDto
 
     public string ItemNo { get; set; } = null!;
 
-    public string? ItemName { get; set; }
+    public string ItemName { get; set; } = null!;
 
     public decimal Price { get; set; }
 
