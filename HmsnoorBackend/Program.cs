@@ -1,8 +1,11 @@
+using System.Text.Json;
 using HmsnoorBackend.Data;
 using HmsnoorBackend.Repositories;
 using HmsnoorBackend.Services;
+using HmsnoorBackend.Utils;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 namespace HmsnoorBackend;
@@ -11,6 +14,10 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        // ========== Load .ENV ====================
+        var dotenv = Path.Combine(Directory.GetCurrentDirectory(), ".env");
+        DotEnv.Load(dotenv);
+
         // ========== Serilog ====================
         var log = new LoggerConfiguration()
             .WriteTo.Console()
@@ -23,24 +30,31 @@ public class Program
 
         // Add services to the container.
         // builder.Services.AddControllersWithViews();
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+            });
         builder.Services.AddEndpointsApiExplorer();
 
-        // ========== DbContext ====================
-        // builder.Services.AddDbContext<HmsnoorDbContext>(options => 
-        //     options.UseSqlServer(
-        //              builder.Configuration.GetConnectionString("HmsnoorDb"))
-        // );
-
+        // ========== Setup DbContext ====================
         // Use Connection String Builder
         var connStringBuilder = new SqlConnectionStringBuilder(
-            builder.Configuration.GetConnectionString("HmsnoorDb"));
-        connStringBuilder.UserID = builder.Configuration["DBUser"];
-        connStringBuilder.Password = builder.Configuration["DBPassword"];
-
+            builder.Configuration.GetConnectionString("HmsnoorDb"))
+        {
+            // Orders: 
+            // 1. command-line args -> 2. enviroment variables -> 3. user secrets ->
+            // 4. appsettings.{Environment}.json -> 5. appsettings.json -> 
+            // 6. build-in config providers -> 7. custom config
+            InitialCatalog = builder.Configuration["DB_NAME"],
+            UserID = builder.Configuration["DB_USER"],
+            Password = builder.Configuration["DB_PASSWORD"]
+        };
+        // DbContext
         builder.Services.AddDbContext<HmsnoorDbContext>(options =>
         {
             options.UseSqlServer(connStringBuilder.ConnectionString);
+            // .LogTo(Console.WriteLine, LogLevel.Information);
         });
 
 
