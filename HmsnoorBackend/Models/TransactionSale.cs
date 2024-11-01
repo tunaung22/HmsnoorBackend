@@ -11,77 +11,77 @@ public partial class TransactionSale
 
     public DateOnly InvoiceDate { get; set; }
 
-    public string VoucherNo { get; set; } = string.Empty;
+    public string? VoucherNo { get; set; } = null;
 
     public int Currency { get; set; } = 1;
 
-    public string ReceivableType { get; set; } = string.Empty;
+    public string ReceivableType { get; set; } = null!;
 
-    public string RegistrationNo { get; set; } = string.Empty;
+    public string? RegistrationNo { get; set; } = null;
 
-    public string Remark { get; set; } = string.Empty;
+    public string? Remark { get; set; } = null;
 
-    public decimal Total { get; set; } = decimal.Zero;
+    public decimal Total { get; set; }
 
-    public decimal DiscountPers { get; set; } = decimal.Zero;
+    public decimal DiscountPers { get; set; }
 
-    public decimal DiscountAmt { get; set; } = decimal.Zero;
+    public decimal DiscountAmt { get; set; }
 
-    public decimal TaxPers { get; set; } = decimal.Zero;
+    public decimal TaxPers { get; set; }
 
-    public decimal TaxAmount { get; set; } = decimal.Zero;
+    public decimal TaxAmount { get; set; }
 
-    public decimal ServicePers { get; set; } = decimal.Zero;
+    public decimal ServicePers { get; set; }
 
-    public decimal ServiceAmount { get; set; } = decimal.Zero;
+    public decimal ServiceAmount { get; set; }
 
-    public decimal NetAmount { get; set; } = decimal.Zero;
+    public decimal NetAmount { get; set; }
 
-    public string CashierId { get; set; } = string.Empty;
+    public string CashierId { get; set; } = null!;
 
     public int CreateUserId { get; set; }
 
     public DateTime CreateDate { get; set; }
 
-    public int? ModifyUserId { get; set; }
+    public int? ModifyUserId { get; set; } = null;
 
-    public DateTime? ModifyDate { get; set; }
+    public DateTime? ModifyDate { get; set; } = null;
 
-    public DateOnly? PaidDate { get; set; }
+    public DateOnly? PaidDate { get; set; } = null;
 
-    public decimal ServiceTaxPers { get; set; } = decimal.Zero;
+    public decimal ServiceTaxPers { get; set; }
 
-    public decimal ServiceTaxAmount { get; set; } = decimal.Zero;
+    public decimal ServiceTaxAmount { get; set; }
 
     public bool? IsPaidBill { get; set; }
 
-    public string MemberCardNo { get; set; } = string.Empty;
+    public string? MemberCardNo { get; set; }
 
-    public string StaffName { get; set; } = string.Empty;
+    public string? StaffName { get; set; }
 
-    public decimal CashPaymentDollar { get; set; } = decimal.Zero;
+    public decimal CashPaymentDollar { get; set; }
 
-    public decimal CashPaymentKs { get; set; } = decimal.Zero;
+    public decimal CashPaymentKs { get; set; }
 
-    public decimal CardPaymentDollar { get; set; } = decimal.Zero;
+    public decimal CardPaymentDollar { get; set; }
 
-    public decimal CardPaymentKs { get; set; } = decimal.Zero;
+    public decimal CardPaymentKs { get; set; }
 
-    public decimal RemainDollar { get; set; } = decimal.Zero;
+    public decimal RemainDollar { get; set; }
 
-    public decimal RemainKs { get; set; } = decimal.Zero;
+    public decimal RemainKs { get; set; }
 
-    public decimal RefundDollar { get; set; } = decimal.Zero;
+    public decimal RefundDollar { get; set; }
 
-    public decimal RefundKs { get; set; } = decimal.Zero;
+    public decimal RefundKs { get; set; }
 
-    public string CardNo { get; set; } = string.Empty;
+    public string? CardNo { get; set; }
 
-    public string CardType { get; set; } = string.Empty;
+    public string? CardType { get; set; }
 
-    public decimal BankChargesDollar { get; set; } = decimal.Zero;
+    public decimal BankChargesDollar { get; set; }
 
-    public decimal BankChargesKs { get; set; } = decimal.Zero;
+    public decimal BankChargesKs { get; set; }
 
-    public decimal BottleCharges { get; set; } = decimal.Zero;
+    public decimal BottleCharges { get; set; }
 }
