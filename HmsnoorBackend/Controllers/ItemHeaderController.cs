@@ -11,15 +11,15 @@ public class ItemHeaderController : ControllerBase
 {
 
     private readonly ILogger<ItemHeaderController> _logger;
-    private readonly ItemHeaderService _service;
+    private readonly IItemHeaderService _service;
 
-    public ItemHeaderController(ILogger<ItemHeaderController> logger, ItemHeaderService service)
+    public ItemHeaderController(ILogger<ItemHeaderController> logger, IItemHeaderService service)
     {
         _logger = logger;
         _service = service;
     }
 
-    [HttpGet]
+    [HttpGet("")]
     public async Task<IActionResult> GetAllItemHeaders()
     {
         var result = await _service.GetAllItemHeadersAsync();
@@ -30,13 +30,18 @@ public class ItemHeaderController : ControllerBase
     public async Task<IActionResult> GetItemHeaderByItemNo(string itemNo)
     {
         var result = await _service.GetItemHeaderByItemNoAsync(itemNo);
-        return Ok(result);
 
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
     }
 
 
 
-    [HttpPost]
+    [HttpPost("")]
     public async Task<IActionResult> SaveItemHeader([FromBody] ItemHeaderCreateDto request)
     {
         var result = await _service.SaveItemHeaderAsync(request);

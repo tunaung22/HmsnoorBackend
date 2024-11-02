@@ -13,9 +13,9 @@ namespace HmsnoorBackend.Controllers;
 public class TransactionSalesController : ControllerBase
 {
 
-    private readonly TransactionSalesService _service;
+    private readonly ITransactionSalesService _service;
 
-    public TransactionSalesController(TransactionSalesService service)
+    public TransactionSalesController(ITransactionSalesService service)
     {
         _service = service;
     }
