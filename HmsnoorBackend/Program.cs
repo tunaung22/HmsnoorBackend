@@ -1,11 +1,11 @@
 using System.Text.Json;
 using HmsnoorBackend.Data;
+using HmsnoorBackend.ExceptionHandlers;
 using HmsnoorBackend.Repositories;
 using HmsnoorBackend.Services;
 using HmsnoorBackend.Utils;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 namespace HmsnoorBackend;
@@ -25,19 +25,22 @@ public class Program
             .CreateLogger();
         Log.Logger = log;
 
-        // ========== Builder ====================
+        // ========== Builder ========================================
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
+        // ========== Services ========================================
         // builder.Services.AddControllersWithViews();
         builder.Services.AddControllers()
             .AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+                // options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
         builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+        builder.Services.AddProblemDetails();
 
-        // ========== Setup DbContext ====================
+        // ========== Setup DbContext ==============================
         // Use Connection String Builder
         var connStringBuilder = new SqlConnectionStringBuilder(
             builder.Configuration.GetConnectionString("HmsnoorDb"))
@@ -50,7 +53,6 @@ public class Program
             UserID = builder.Configuration["DB_USER"],
             Password = builder.Configuration["DB_PASSWORD"]
         };
-        // DbContext
         builder.Services.AddDbContext<HmsnoorDbContext>(options =>
         {
             options.UseSqlServer(connStringBuilder.ConnectionString);
@@ -60,13 +62,15 @@ public class Program
 
         // ========== Register services and repositories ====================
         // Repository Layer
-        builder.Services.AddScoped<IItemHeaderRepository, ItemHeaderRepository>();
-        builder.Services.AddScoped<ITransactionSaleRepository, TransactionSaleRepository>();
-        builder.Services.AddScoped<ITransactionSalesItemRepository, TransactionSalesItemRepository>();
+        builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+        builder.Services.AddScoped<IItemRepository, ItemRepository>();
+        builder.Services.AddScoped<IItemDetailRepository, ItemDetailRepository>();
+        builder.Services.AddScoped<ISaleInvoiceRepository, SaleInvoiceRepository>();
+        builder.Services.AddScoped<ISaleItemRepository, SaleItemRepository>();
         // Service Layer
-        builder.Services.AddScoped<ItemHeaderService>();
-        builder.Services.AddScoped<TransactionSalesService>();
-        builder.Services.AddScoped<TransactionSalesItemService>();
+        builder.Services.AddScoped<IItemService, ItemService>();
+        builder.Services.AddScoped<ISaleInvoiceService, SaleInvoiceService>();
+        builder.Services.AddScoped<ISaleItemService, SaleItemService>();
 
         // builder.Logging.AddJsonConsole();
 
@@ -84,8 +88,10 @@ public class Program
             // app.useswaggerui
         }
 
+        app.UseExceptionHandler();
 
-        // ========== Staticfiles ====================
+
+        // ========== Staticfiles ========================================
         app.UseStaticFiles();
 
         app.UseHttpsRedirection();
