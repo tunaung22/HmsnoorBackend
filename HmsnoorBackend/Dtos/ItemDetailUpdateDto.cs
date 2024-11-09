@@ -1,9 +1,10 @@
-﻿namespace HmsnoorBackend.Models;
+using System;
 
+namespace HmsnoorBackend.Dtos;
 
-public partial class ItemDetail
+public class ItemDetailUpdateDto
 {
-    public int Id { get; set; }
+    // public int Id { get; set; }
     public string ItemNo { get; set; } = null!;
     public string ItemType { get; set; } = null!;
     public int CurrencyId { get; set; }

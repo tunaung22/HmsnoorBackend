@@ -106,7 +106,7 @@ public class TransactionSalesMasterMapper
 
 
     // Master DTO -> Sale Invoice Entity (**wihtout SaleItems)
-    public static TransactionSale ToEntity(TransactionSalesMasterCreateDto dto)
+    public static TransactionSale ToEntity(InvoiceWithItemsCreateDto dto)
     {
         return new TransactionSale
         {
@@ -153,13 +153,13 @@ public class TransactionSalesMasterMapper
         };
     }
 
-    public static TransactionSalesMasterGetDto MergeTransactionSaleAndTransactionSaleItemsDto(
-                                TransactionSalesGetDto invoiceDto, 
-                                List<TransactionSalesItemGetDto>? itemDtoList)
+    public static InvoiceWithItemsGetDto MergeTransactionSaleAndTransactionSaleItemsDto(
+                                InvoiceGetDto invoiceDto,
+                                List<InvoiceItemGetDto>? itemDtoList)
     {
         if (itemDtoList == null || itemDtoList.Count == 0)
         {
-            return new TransactionSalesMasterGetDto
+            return new InvoiceWithItemsGetDto
             {
                 SalesType = invoiceDto.SalesType,
                 InvoiceNo = invoiceDto.InvoiceNo,
@@ -205,7 +205,7 @@ public class TransactionSalesMasterMapper
 
         }
 
-        return new TransactionSalesMasterGetDto
+        return new InvoiceWithItemsGetDto
         {
             SalesType = invoiceDto.SalesType,
             InvoiceNo = invoiceDto.InvoiceNo,

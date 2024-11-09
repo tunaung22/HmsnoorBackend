@@ -1,7 +1,8 @@
-﻿namespace HmsnoorBackend.Models;
+using System;
 
+namespace HmsnoorBackend.Dtos;
 
-public partial class ItemDetail
+public class ItemDetailCreateDto
 {
     public int Id { get; set; }
     public string ItemNo { get; set; } = null!;

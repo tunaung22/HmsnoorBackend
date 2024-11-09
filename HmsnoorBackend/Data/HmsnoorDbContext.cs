@@ -14,15 +14,23 @@ public class HmsnoorDbContext : DbContext
     // {
     //     optionsBuilder.UseSqlServer("YourConnectionStringHere");
     // }
-
+    public DbSet<Currency> Currency { get; set; }
     public DbSet<ItemHeader> ItemHeaders { get; set; }
+    public DbSet<ItemDetail> ItemDetail { get; set; }
     public DbSet<TransactionSale> TransactionSales { get; set; }
     public DbSet<TransactionSalesItem> TransactionSalesItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        // https://learn.microsoft.com/en-us/ef/core/modeling/#grouping-configuration
+        // method 1
+        // new ItemHeaderConfiguration().Configure(builder.Entity<ItemHeader>());
+        // method 2
+        // builder.ApplyConfiguration(new ItemHeaderConfiguration());
 
+        builder.ApplyConfiguration(new CurrencyConfiguration());
         builder.ApplyConfiguration(new ItemHeaderConfiguration());
+        builder.ApplyConfiguration(new ItemDetailConfiguration());
         builder.ApplyConfiguration(new TransactionSaleConfiguration());
         builder.ApplyConfiguration(new TransactionSalesItemConfiguration());
 

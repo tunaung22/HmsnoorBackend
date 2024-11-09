@@ -7,6 +7,7 @@ namespace HmsnoorBackend.Data.Configurations;
 
 public class ItemHeaderConfiguration : IEntityTypeConfiguration<ItemHeader>
 {
+    // https://learn.microsoft.com/en-us/ef/core/modeling/#grouping-configuration
 
     public void Configure(EntityTypeBuilder<ItemHeader> builder)
     {
