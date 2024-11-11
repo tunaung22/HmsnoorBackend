@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HmsnoorBackend.Controllers;
 
-[Route("api/items")]
+[Route("api")]
 [ApiController]
 public class ItemsController : ControllerBase
 {
@@ -18,7 +18,10 @@ public class ItemsController : ControllerBase
         _itemService = service;
     }
 
-    [HttpPost("")]
+    [HttpPost("/v1/items")]
+    [ProducesResponseType<ItemWithDetailGetDto>(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create_ItemWithDetail_Async([FromBody] ItemWithDetailCreateDto requestBody)
     {
         var result = await _itemService.SaveItemAsync(requestBody);
@@ -31,7 +34,10 @@ public class ItemsController : ControllerBase
         throw new Exception("Controller::POST: exception occured.");
     }
 
-    [HttpPatch("/type/{itemType}/code/{itemNo}")]
+    [HttpPatch("/v1/items/type/{itemType}/code/{itemNo}")]
+    [ProducesResponseType<ItemWithDetailGetDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Update_ItemWithDetail_Async(string itemType,
                                                             string itemNo,
                                                             ItemWithDetailUpdateDto requestBody)
@@ -46,21 +52,26 @@ public class ItemsController : ControllerBase
         throw new Exception("Controller::PATCH: exception occured.");
     }
 
-    // [HttpDelete("/type/{itemType}/code/{itemNo}")]
-    // public async Task<IActionResult> DeleteItemByIdAsync(string itemType, string itemNo)
-    // {
-    //     // check for deletable???
-    //     var result = await _itemService.DeleteItemAsync(itemType, itemNo);
-    //     if (result)
-    //     {
-    //         return NoContent();
-    //     }
-    //     // 400, 500
-    //     throw new Exception("Controller::DELETE: exception occured.");
-    // }
+    [HttpDelete("/v1/items/type/{itemType}/code/{itemNo}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public IActionResult Delete_Item_ById_(string itemType, string itemNo)
+    {
+        // check for deletable???
+        // var result = await _itemService.DeleteItem_ById_Async(itemType, itemNo);
+        // if (result)
+        // {
+        return NoContent();
+        // }
+        // 400, 500
+        // throw new Exception("Controller::DELETE: exception occured.");
+    }
 
-    [HttpGet("/type/{itemType}/code/{itemNo}")]
-    public async Task<IActionResult> Get_ItemWithDetail_ById_Async(string itemType, string itemNo)
+    [HttpGet("/v1/items/type/{itemType}/code/{itemNo}")]
+    [ProducesResponseType<ItemWithDetailGetDto>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetItemByIdAsync(string itemType, string itemNo)
     {
         // var result = await _service.GetItemHeaderByItemNoAsync(itemNo);
         var result = await _itemService.FindItemByIdAsync(itemType, itemNo);
@@ -73,13 +84,21 @@ public class ItemsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("")]
-    [ProducesResponseType<ItemWithDetailGetDto>(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetAll_ItemWithDetails_Async()
+    [HttpGet("/v1/items")]
+    [ProducesResponseType<IEnumerable<ItemWithDetailGetDto>>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetItemsAsync()
     {
         // TODOs: pagination, filters
         var result = await _itemService.FindAllItemsAsync();
+        return Ok(result);
+    }
+
+    [HttpGet("/v1.1/items")]
+    [ProducesResponseType<IEnumerable<ItemWithDetailAndCurrencyGetDto>>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetItemsWithCurrencyAsync()
+    {
+        // TODOs: pagination, filters
+        var result = await _itemService.FindAllItemsWithCurrencyAsync();
         return Ok(result);
     }
 
