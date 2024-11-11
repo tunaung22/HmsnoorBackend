@@ -2,7 +2,7 @@ using System;
 
 namespace HmsnoorBackend.Dtos;
 
-public class CurrencyGetDto
+public class CurrencyCreateDto
 {
     public int CurrencyId { get; set; }
     public string CurrencyDescription { get; set; } = null!;

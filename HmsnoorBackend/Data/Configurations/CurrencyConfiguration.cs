@@ -17,9 +17,13 @@ public class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
             .HasColumnType("int")
             .IsRequired();
 
-        builder.Property(e => e.CurrencyName)
-            .HasColumnName("CurrencyName")
-            .HasColumnType("nvarchar(100)")
+        builder.Property(e => e.CurrencyDescription)
+            .HasColumnName("CurrencyDescription")
+            .HasColumnType("nvarchar(200)")
             .IsRequired();
+
+        builder.Property(e => e.CurrencyNotation)
+            .HasColumnName("CurrencyNotation")
+            .HasColumnType("nvarchar(3)");
     }
 }
