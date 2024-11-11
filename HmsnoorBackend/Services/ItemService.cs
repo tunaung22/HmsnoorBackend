@@ -29,7 +29,6 @@ public class ItemService : IItemService
     }
 
 
-    // =============== Item + Detail ========================================
     /// <summary>
     /// Find(Item + Detail)
     /// </summary>
@@ -65,7 +64,68 @@ public class ItemService : IItemService
         {
             throw;
         }
+    }
 
+    /// <summary>
+    /// Find(Item + Detail) + Currency
+    /// </summary>
+    /// <returns>List<ItemWithDetailAndCurrencyGetDto></returns>
+    public async Task<List<ItemWithDetailAndCurrencyGetDto>> FindAllItemsWithCurrencyAsync()
+    {
+        List<ItemWithDetailAndCurrencyGetDto> result = [];
+        List<ItemDetailWithCurrencyGetDto> itemDetailWithCurrency = [];
+
+        try
+        {
+            var itemHeaders = await _itemRepo.FindAll().ToListAsync();
+
+            if (itemHeaders != null)
+            {
+                foreach (var iHeader in itemHeaders)
+                {
+
+                    List<Models.ItemDetail>? itemDetails = await _itemDetailRepo
+                        .FindAllByItemTypeItemNo(iHeader.ItemType, iHeader.ItemNo)
+                        .ToListAsync();
+
+                    // itemDetails.ForEach(async item =>
+                    foreach (var item in itemDetails)
+                    {
+                        var currency = await _currencyRepo
+                            .FindById(item.CurrencyId)
+                            .FirstOrDefaultAsync();
+
+                        CurrencyGetDto? currencyDto = new();
+
+                        if (currency != null)
+                            currencyDto = CurrencyMapper.ToGetDto(currency);
+
+                        itemDetailWithCurrency.Add(new()
+                        {
+                            ItemType = item.ItemType,
+                            ItemNo = item.ItemNo,
+                            Currency = currencyDto,
+                            Price = item.Price
+                        });
+                    };
+
+                    result.Add(new ItemWithDetailAndCurrencyGetDto
+                    {
+                        ItemType = iHeader.ItemType,
+                        ItemNo = iHeader.ItemNo,
+                        ItemCategory = iHeader.ItemCategory,
+                        ItemName = iHeader.ItemName,
+                        MItemName = iHeader.MItemName,
+                        Items = itemDetailWithCurrency
+                    });
+                };
+            }
+            return result;
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
     }
 
 

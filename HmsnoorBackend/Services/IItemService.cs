@@ -9,6 +9,9 @@ public interface IItemService
     // Find (Item + Detail)
     Task<List<ItemWithDetailGetDto>> FindAllItemsAsync();
 
+    // Find (Item + Detail) + Currency
+    Task<List<ItemWithDetailAndCurrencyGetDto>> FindAllItemsWithCurrencyAsync();
+
     // Find (Item + Detail) by Type
 
     // Find (Item + Detail) by Id
@@ -41,5 +44,4 @@ public interface IItemService
     Task<List<ItemGetDto>> GetAllItemHeadersAsync();
     [Obsolete("This method is deprecated. Use SaveAsync instead.", false)]
     Task<ItemGetDto> SaveItemHeaderAsync(ItemCreateDto requestBody);
-
 }
