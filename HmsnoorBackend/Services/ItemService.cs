@@ -1,7 +1,6 @@
 using HmsnoorBackend.Data;
 using HmsnoorBackend.Dtos;
 using HmsnoorBackend.Dtos.DtoMappers;
-using HmsnoorBackend.Middlewares.Exceptions;
 using HmsnoorBackend.Repositories;
 using Microsoft.EntityFrameworkCore;
 

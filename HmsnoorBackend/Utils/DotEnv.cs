@@ -1,5 +1,3 @@
-using System;
-
 namespace HmsnoorBackend.Utils;
 
 // https://dusted.codes/dotenv-in-dotnet
