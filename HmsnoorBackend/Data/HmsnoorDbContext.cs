@@ -14,6 +14,9 @@ public class HmsnoorDbContext : DbContext
     // {
     //     optionsBuilder.UseSqlServer("YourConnectionStringHere");
     // }
+
+    public DbSet<UserAccount> UserAccounts { get; set; }
+    public DbSet<UserGroup> UserGroups { get; set; }
     public DbSet<Currency> Currency { get; set; }
     public DbSet<ItemHeader> ItemHeaders { get; set; }
     public DbSet<ItemDetail> ItemDetail { get; set; }
@@ -28,6 +31,8 @@ public class HmsnoorDbContext : DbContext
         // method 2
         // builder.ApplyConfiguration(new ItemHeaderConfiguration());
 
+        builder.ApplyConfiguration(new UserGroupConfiguration());
+        builder.ApplyConfiguration(new UserGroupConfiguration());
         builder.ApplyConfiguration(new CurrencyConfiguration());
         builder.ApplyConfiguration(new ItemHeaderConfiguration());
         builder.ApplyConfiguration(new ItemDetailConfiguration());
