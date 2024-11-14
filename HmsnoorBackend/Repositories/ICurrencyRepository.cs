@@ -1,5 +1,4 @@
-using System;
-using HmsnoorBackend.Models;
+using HmsnoorBackend.Data.Models;
 
 namespace HmsnoorBackend.Repositories;
 

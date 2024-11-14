@@ -1,5 +1,4 @@
-using System;
-using HmsnoorBackend.Models;
+using HmsnoorBackend.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,16 +14,19 @@ public class TransactionSalesItemConfiguration : IEntityTypeConfiguration<Transa
         builder.Property(e => e.InvoiceNo)
             .HasColumnName("InvoiceNo")
             .HasColumnType("nvarchar(20)")
-            .HasMaxLength(20);
+            .HasMaxLength(20)
+            .IsRequired();
 
         builder.Property(e => e.ItemNo)
             .HasColumnName("ItemNo")
             .HasColumnType("nvarchar(20)")
-            .HasMaxLength(20);
+            .HasMaxLength(20)
+            .IsRequired();
 
         builder.Property(e => e.ItemName)
             .HasColumnName("ItemName")
-            .HasColumnType("nvarchar(max)");
+            .HasColumnType("nvarchar(max)")
+            .IsRequired();
 
         builder.Property(e => e.Price)
             .HasColumnName("Price")

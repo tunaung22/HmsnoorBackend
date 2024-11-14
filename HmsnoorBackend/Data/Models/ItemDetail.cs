@@ -1,5 +1,4 @@
-﻿namespace HmsnoorBackend.Models;
-
+﻿namespace HmsnoorBackend.Data.Models;
 
 public partial class ItemDetail
 {

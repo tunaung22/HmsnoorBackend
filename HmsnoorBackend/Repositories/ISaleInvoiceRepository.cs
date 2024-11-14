@@ -1,5 +1,5 @@
 using HmsnoorBackend.Dtos;
-using HmsnoorBackend.Models;
+using HmsnoorBackend.Data.Models;
 
 namespace HmsnoorBackend.Repositories;
 

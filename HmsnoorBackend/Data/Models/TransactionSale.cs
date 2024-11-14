@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace HmsnoorBackend.Models;
+﻿namespace HmsnoorBackend.Data.Models;
 
 public partial class TransactionSale
 {

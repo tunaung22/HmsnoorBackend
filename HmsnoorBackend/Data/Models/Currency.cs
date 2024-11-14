@@ -1,6 +1,4 @@
-using System;
-
-namespace HmsnoorBackend.Models;
+namespace HmsnoorBackend.Data.Models;
 
 public partial class Currency
 {

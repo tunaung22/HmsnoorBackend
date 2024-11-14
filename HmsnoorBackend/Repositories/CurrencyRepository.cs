@@ -1,7 +1,6 @@
-using System;
 using HmsnoorBackend.Data;
 using HmsnoorBackend.Middlewares.Exceptions;
-using HmsnoorBackend.Models;
+using HmsnoorBackend.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HmsnoorBackend.Repositories;

@@ -1,6 +1,5 @@
-using System;
 using HmsnoorBackend.Data.Configurations;
-using HmsnoorBackend.Models;
+using HmsnoorBackend.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HmsnoorBackend.Data;

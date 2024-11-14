@@ -1,4 +1,4 @@
-namespace HmsnoorBackend.Models;
+namespace HmsnoorBackend.Data.Models;
 
 public class ErrorViewModel
 {

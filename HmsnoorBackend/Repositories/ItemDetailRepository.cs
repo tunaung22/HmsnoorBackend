@@ -1,8 +1,6 @@
-using System;
 using HmsnoorBackend.Data;
-using HmsnoorBackend.Models;
+using HmsnoorBackend.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 
 namespace HmsnoorBackend.Repositories;
 
