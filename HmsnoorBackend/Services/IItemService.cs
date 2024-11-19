@@ -8,6 +8,9 @@ public interface IItemService
     // Find (Item + Detail)
     Task<List<ItemWithDetailGetDto>> FindAllItemsAsync();
 
+    // Find (Item + Detail + Currency + Category)
+    List<ItemWithDetailAndCurrencyGetDto>? FindAllItemsWithDetails();
+
     // Find (Item + Detail) + Currency
     Task<List<ItemWithDetailAndCurrencyGetDto>> FindAllItemsWithCurrencyAsync();
 

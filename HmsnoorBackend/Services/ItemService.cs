@@ -1,6 +1,9 @@
+using System.Runtime.CompilerServices;
 using HmsnoorBackend.Data;
+using HmsnoorBackend.Data.Models;
 using HmsnoorBackend.Dtos;
 using HmsnoorBackend.Dtos.DtoMappers;
+using HmsnoorBackend.Interfaces.QueryRepositories;
 using HmsnoorBackend.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,23 +11,27 @@ namespace HmsnoorBackend.Services;
 
 public class ItemService : IItemService
 {
-    private readonly HmsnoorDbContext _context;
     private readonly ILogger<ItemService> _logger;
+    private readonly HmsnoorDbContext _context;
+    private readonly IItemQueryRepository _itemQueryRepo;
     private readonly IItemRepository _itemRepo;
     private readonly IItemDetailRepository _itemDetailRepo;
     private readonly ICurrencyRepository _currencyRepo;
 
-    public ItemService(HmsnoorDbContext context,
-                        IItemRepository repository,
-                        IItemDetailRepository itemDetailRepo,
-                        ICurrencyRepository currencyRepository,
-                        ILogger<ItemService> logger)
+    public ItemService(
+        ILogger<ItemService> logger,
+        HmsnoorDbContext context,
+        IItemQueryRepository itemQueryRepo,
+        IItemRepository itemRepo,
+        IItemDetailRepository itemDetailRepo,
+        ICurrencyRepository currencyRepository)
     {
+        _logger = logger;
         _context = context;
-        _itemRepo = repository;
+        _itemQueryRepo = itemQueryRepo;
+        _itemRepo = itemRepo;
         _itemDetailRepo = itemDetailRepo;
         _currencyRepo = currencyRepository;
-        _logger = logger;
     }
 
 
@@ -53,7 +60,7 @@ public class ItemService : IItemService
                         ItemCategory = h.ItemCategory,
                         ItemName = h.ItemName,
                         MItemName = h.MItemName,
-                        Items = ItemDetailMapper.ToGetDto(itemDetails)
+                        ItemDetails = ItemDetailMapper.ToGetDto(itemDetails)
                     });
                 }
             }
@@ -64,6 +71,13 @@ public class ItemService : IItemService
             throw;
         }
     }
+
+    public List<ItemWithDetailAndCurrencyGetDto>? FindAllItemsWithDetails()
+    {
+        return _itemQueryRepo.FindAllWithDetails();
+    }
+
+
 
     /// <summary>
     /// Find(Item + Detail) + Currency
@@ -83,7 +97,7 @@ public class ItemService : IItemService
                 foreach (var iHeader in itemHeaders)
                 {
 
-                    List<Models.ItemDetail>? itemDetails = await _itemDetailRepo
+                    List<ItemDetail>? itemDetails = await _itemDetailRepo
                         .FindAllByItemTypeItemNo(iHeader.ItemType, iHeader.ItemNo)
                         .ToListAsync();
 
@@ -115,10 +129,12 @@ public class ItemService : IItemService
                         ItemCategory = iHeader.ItemCategory,
                         ItemName = iHeader.ItemName,
                         MItemName = iHeader.MItemName,
-                        Items = itemDetailWithCurrency
+                        ItemDetails = itemDetailWithCurrency
                     });
                 };
+
             }
+
             return result;
         }
         catch (System.Exception)
@@ -154,10 +170,11 @@ public class ItemService : IItemService
             result.ItemCategory = h.ItemCategory;
             result.ItemName = h.ItemName;
             result.MItemName = h.MItemName;
-            result.Items = ItemDetailMapper.ToGetDto(itemDetails);
+            result.ItemDetails = ItemDetailMapper.ToGetDto(itemDetails);
 
+            return result;
         }
-        return result;
+        return null;
     }
 
     /*

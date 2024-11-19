@@ -73,18 +73,25 @@ public class ItemsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetItemByIdAsync(string itemType, string itemNo)
     {
-        // var result = await _service.GetItemHeaderByItemNoAsync(itemNo);
         var result = await _itemService.FindItemByIdAsync(itemType, itemNo);
 
-        if (result == null)
-        {
-            return NotFound();
-        }
+        // if (!ModelState.IsValid)
+        // {
+        //     return BadRequest(ModelState);
+        // }
+
+        // if (result == null)
+        // {
+        // return NotFound(new { Message = "Item Not Found" });
+        // return NotFound(new { Message = "Item Not Found" });
+
+        // }
+
 
         return Ok(result);
     }
 
-    [HttpGet("/v1/items")]
+    [HttpGet("/items")]
     [ProducesResponseType<IEnumerable<ItemWithDetailGetDto>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetItemsAsync()
     {
@@ -93,12 +100,13 @@ public class ItemsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("/v1.1/items")]
+    [HttpGet("/v1.0/items")]
     [ProducesResponseType<IEnumerable<ItemWithDetailAndCurrencyGetDto>>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetItemsWithCurrencyAsync()
+    public async Task<IActionResult> Get_ItemsWithCurrency_V1_1_Async()
     {
         // TODOs: pagination, filters
-        var result = await _itemService.FindAllItemsWithCurrencyAsync();
+        var result = await Task.Run(() => _itemService.FindAllItemsWithDetails());
+
         return Ok(result);
     }
 
