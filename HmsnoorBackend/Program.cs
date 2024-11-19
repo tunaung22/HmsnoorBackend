@@ -1,6 +1,10 @@
 using System.Text.Json;
 using HmsnoorBackend.Data;
-using HmsnoorBackend.ExceptionHandlers;
+using HmsnoorBackend.Interfaces.QueryRepositories;
+using HmsnoorBackend.Interfaces.Repositories;
+using HmsnoorBackend.Interfaces.Services;
+using HmsnoorBackend.Middlewares;
+using HmsnoorBackend.QueryRepositories;
 using HmsnoorBackend.Repositories;
 using HmsnoorBackend.Services;
 using HmsnoorBackend.Utils;
@@ -32,6 +36,12 @@ public class Program
         // ========== Services =================================================
         // builder.Services.AddControllersWithViews();
         builder.Services.AddControllers()
+            // https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-8.0
+            .ConfigureApiBehaviorOptions(options =>
+            {
+                // Disable automatic creation of a ProblemDetails for error status codes
+                // options.SuppressMapClientErrors = true; 
+            })
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
@@ -42,7 +52,7 @@ public class Program
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
 
-        // Swagger
+        // ========== OpenAPI ==================================================
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
@@ -69,13 +79,19 @@ public class Program
 
 
         // ========== Register services and repositories =======================
+        // QueryRepository Layer
+        builder.Services.AddScoped<IItemQueryRepository, ItemQueryRepository>();
         // Repository Layer
+        builder.Services.AddScoped<IUserGroupRepository, UserGroupRepository>();
+        builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>();
         builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
         builder.Services.AddScoped<IItemRepository, ItemRepository>();
         builder.Services.AddScoped<IItemDetailRepository, ItemDetailRepository>();
         builder.Services.AddScoped<ISaleInvoiceRepository, SaleInvoiceRepository>();
         builder.Services.AddScoped<ISaleItemRepository, SaleItemRepository>();
         // Service Layer
+        builder.Services.AddScoped<IUserGroupService, UserGroupService>();
+        builder.Services.AddScoped<IUserAccountService, UserAccountService>();
         builder.Services.AddScoped<ICurrencyService, CurrencyService>();
         builder.Services.AddScoped<IItemService, ItemService>();
         builder.Services.AddScoped<ISaleInvoiceService, SaleInvoiceService>();
@@ -96,6 +112,7 @@ public class Program
         }
 
         app.UseExceptionHandler();
+        app.UseStatusCodePages();
 
 
         // ========== Staticfiles ==============================================
