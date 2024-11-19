@@ -4,6 +4,8 @@ using HmsnoorBackend.Data.Models;
 using HmsnoorBackend.Dtos;
 using HmsnoorBackend.Dtos.DtoMappers;
 using HmsnoorBackend.Interfaces.QueryRepositories;
+using HmsnoorBackend.Interfaces.Repositories;
+using HmsnoorBackend.Interfaces.Services;
 using HmsnoorBackend.Repositories;
 using Microsoft.EntityFrameworkCore;
 

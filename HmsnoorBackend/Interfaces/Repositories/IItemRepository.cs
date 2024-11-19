@@ -1,7 +1,7 @@
 using HmsnoorBackend.Data.Models;
 using HmsnoorBackend.Dtos;
 
-namespace HmsnoorBackend.Repositories;
+namespace HmsnoorBackend.Interfaces.Repositories;
 
 public interface IItemRepository
 {

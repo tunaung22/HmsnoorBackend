@@ -7,5 +7,5 @@ public class ItemWithDetailAndCurrencyGetDto
     public String? ItemCategory { get; set; }
     public String ItemName { get; set; } = null!;
     public String? MItemName { get; set; }
-    public List<ItemDetailWithCurrencyGetDto> Items { get; set; } = [];
+    public List<ItemDetailWithCurrencyGetDto> ItemDetails { get; set; } = [];
 }

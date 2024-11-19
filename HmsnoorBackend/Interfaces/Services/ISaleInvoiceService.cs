@@ -1,6 +1,6 @@
 using HmsnoorBackend.Dtos;
 
-namespace HmsnoorBackend.Services;
+namespace HmsnoorBackend.Interfaces.Services;
 
 public interface ISaleInvoiceService
 {

@@ -22,6 +22,6 @@ public class ItemWithDetailCreateDto
     public String? ItemCategory { get; set; }
     public String ItemName { get; set; } = null!;
     public String? MItemName { get; set; }
-    public List<ItemDetailCreateDto> Items { get; set; } = [];
+    public List<ItemDetailCreateDto> ItemDetails { get; set; } = [];
 
 }

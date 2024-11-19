@@ -7,6 +7,6 @@ public class ItemWithDetailUpdateDto
     public String? ItemCategory { get; set; }
     public String ItemName { get; set; } = null!;
     public String? MItemName { get; set; }
-    public List<ItemDetailUpdateDto> Items { get; set; } = [];
+    public List<ItemDetailUpdateDto> ItemDetails { get; set; } = [];
 
 }

@@ -1,7 +1,7 @@
 using HmsnoorBackend.Dtos;
 using HmsnoorBackend.Data.Models;
 
-namespace HmsnoorBackend.Repositories;
+namespace HmsnoorBackend.Interfaces.Repositories;
 
 
 public interface ISaleInvoiceRepository

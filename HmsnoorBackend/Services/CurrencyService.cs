@@ -4,8 +4,9 @@ using HmsnoorBackend.Dtos.DtoMappers;
 using HmsnoorBackend.Exceptions;
 using HmsnoorBackend.Middlewares.Exceptions;
 using HmsnoorBackend.Data.Models;
-using HmsnoorBackend.Repositories;
 using Microsoft.EntityFrameworkCore;
+using HmsnoorBackend.Interfaces.Repositories;
+using HmsnoorBackend.Interfaces.Services;
 
 namespace HmsnoorBackend.Services;
 

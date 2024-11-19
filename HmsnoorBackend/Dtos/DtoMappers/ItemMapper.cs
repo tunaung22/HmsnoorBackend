@@ -1,5 +1,5 @@
 using System;
-using HmsnoorBackend.Models;
+using HmsnoorBackend.Data.Models;
 
 namespace HmsnoorBackend.Dtos.DtoMappers;
 
@@ -121,7 +121,7 @@ public static class ItemMapper
     {
         List<ItemDetail> result = [];
 
-        dto.Items.ForEach(i =>
+        dto.ItemDetails.ForEach(i =>
         {
             result.Add(new ItemDetail
             {
