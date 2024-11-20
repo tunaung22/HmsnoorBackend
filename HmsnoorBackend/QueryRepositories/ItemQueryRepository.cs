@@ -1,7 +1,6 @@
-using System;
 using HmsnoorBackend.Data;
 using HmsnoorBackend.Dtos;
-using HmsnoorBackend.Interfaces.QueryRepositories;
+using HmsnoorBackend.QueryRepositories.Interfaces;
 
 namespace HmsnoorBackend.QueryRepositories;
 
