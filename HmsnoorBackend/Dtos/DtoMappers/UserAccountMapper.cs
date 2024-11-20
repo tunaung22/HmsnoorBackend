@@ -1,4 +1,4 @@
-using HmsnoorBackend.Models;
+using HmsnoorBackend.Data.Models;
 
 namespace HmsnoorBackend.Dtos.DtoMappers;
 
@@ -15,7 +15,7 @@ public static class UserAccountMapper
         {
             UserId = model.UserId,
             UserName = model.UserName,
-            Password = model.Password,
+            // Password = model.Password,
             UserGroup = model.UserGroup,
             Remark = model.Remark,
             IsInsert = model.IsInsert,
@@ -36,7 +36,7 @@ public static class UserAccountMapper
         {
             UserId = dto.UserId,
             UserName = dto.UserName,
-            Password = dto.Password,
+            // Password = dto.Password,
             UserGroup = dto.UserGroup,
             Remark = dto.Remark,
             IsInsert = dto.IsInsert,
