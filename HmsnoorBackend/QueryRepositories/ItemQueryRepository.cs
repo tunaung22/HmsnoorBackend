@@ -14,7 +14,7 @@ public class ItemQueryRepository : IItemQueryRepository
         _context = context;
     }
 
-    public List<ItemWithDetailAndCurrencyGetDto>? FindAllWithDetails()
+    public List<ItemWithDetailGetDto>? FindAllWithDetails()
     {
         /* LEFT JOIN
          * include all ItemHeaders that are not present in ItemDetail 
@@ -22,11 +22,18 @@ public class ItemQueryRepository : IItemQueryRepository
         var query1 = _context.ItemHeaders
             .OrderBy(iH => iH.ItemType)
             .ThenBy(iH => iH.ItemNo)
-            .Select(iH => new ItemWithDetailAndCurrencyGetDto
+            .Select(iH => new ItemWithDetailGetDto
             {
                 ItemType = iH.ItemType,
                 ItemNo = iH.ItemNo,
-                ItemCategory = iH.ItemCategory,
+                ItemCategory = _context.ItemCategory
+                    .Where(cat => cat.ItemCategoryName == iH.ItemCategory)
+                    .Select(cat => new ItemCategoryGetDto
+                    {
+                        ItemCategoryId = cat.ItemCategoryId,
+                        ItemCategoryName = cat.ItemCategoryName,
+                        ItemType = cat.ItemType,
+                    }).SingleOrDefault()!,
                 ItemName = iH.ItemName,
                 MItemName = iH.MItemName,
                 ItemDetails = _context.ItemDetail
@@ -44,7 +51,7 @@ public class ItemQueryRepository : IItemQueryRepository
                                 CurrencyId = c.CurrencyId,
                                 CurrencyDescription = c.CurrencyDescription,
                                 CurrencyNotation = c.CurrencyNotation,
-                            }).Single()
+                            }).SingleOrDefault()!
                     }).ToList()
             }).ToList();
 
@@ -59,12 +66,19 @@ public class ItemQueryRepository : IItemQueryRepository
             .Join(_context.ItemDetail,
                 iH => new { iH.ItemType, iH.ItemNo },
                 iD => new { iD.ItemType, iD.ItemNo },
-                (iH, iD) => new ItemWithDetailAndCurrencyGetDto
+                (iH, iD) => new ItemWithDetailGetDto
                 {
 
                     ItemType = iH.ItemType,
                     ItemNo = iH.ItemNo,
-                    ItemCategory = iH.ItemCategory,
+                    ItemCategory = _context.ItemCategory
+                    .Where(cat => cat.ItemCategoryName == iH.ItemCategory)
+                    .Select(cat => new ItemCategoryGetDto
+                    {
+                        ItemCategoryId = cat.ItemCategoryId,
+                        ItemCategoryName = cat.ItemCategoryName,
+                        ItemType = cat.ItemType,
+                    }).SingleOrDefault()!,
                     ItemName = iH.ItemName,
                     MItemName = iH.MItemName,
                     ItemDetails = new List<ItemDetailWithCurrencyGetDto>
@@ -90,16 +104,23 @@ public class ItemQueryRepository : IItemQueryRepository
         return query;
     }
 
-    public IQueryable<ItemWithDetailAndCurrencyGetDto> FindAllWithDetailsQuery()
+    public IQueryable<ItemWithDetailGetDto> FindAllWithDetailsQuery()
     {
         var leftJoinQuery = _context.ItemHeaders
             .OrderBy(iH => iH.ItemType)
             .ThenBy(iH => iH.ItemNo)
-            .Select(iH => new ItemWithDetailAndCurrencyGetDto
+            .Select(iH => new ItemWithDetailGetDto
             {
                 ItemType = iH.ItemType,
                 ItemNo = iH.ItemNo,
-                ItemCategory = iH.ItemCategory,
+                ItemCategory = _context.ItemCategory
+                    .Where(cat => cat.ItemCategoryName == iH.ItemCategory)
+                    .Select(cat => new ItemCategoryGetDto
+                    {
+                        ItemCategoryId = cat.ItemCategoryId,
+                        ItemCategoryName = cat.ItemCategoryName,
+                        ItemType = cat.ItemType,
+                    }).SingleOrDefault()!,
                 ItemName = iH.ItemName,
                 MItemName = iH.MItemName,
                 ItemDetails = _context.ItemDetail
@@ -128,12 +149,19 @@ public class ItemQueryRepository : IItemQueryRepository
             .Join(_context.ItemDetail,
                 iH => new { iH.ItemType, iH.ItemNo },
                 iD => new { iD.ItemType, iD.ItemNo },
-                (iH, iD) => new ItemWithDetailAndCurrencyGetDto
+                (iH, iD) => new ItemWithDetailGetDto
                 {
 
                     ItemType = iH.ItemType,
                     ItemNo = iH.ItemNo,
-                    ItemCategory = iH.ItemCategory,
+                    ItemCategory = _context.ItemCategory
+                    .Where(cat => cat.ItemCategoryName == iH.ItemCategory)
+                    .Select(cat => new ItemCategoryGetDto
+                    {
+                        ItemCategoryId = cat.ItemCategoryId,
+                        ItemCategoryName = cat.ItemCategoryName,
+                        ItemType = cat.ItemType,
+                    }).SingleOrDefault()!,
                     ItemName = iH.ItemName,
                     MItemName = iH.MItemName,
                     ItemDetails = _context.ItemDetail
@@ -159,18 +187,25 @@ public class ItemQueryRepository : IItemQueryRepository
         return innerJoinQuery;
     }
 
-    public ItemWithDetailAndCurrencyGetDto? FindWithDetailsById(string itemType, string itemNo)
+    public ItemWithDetailGetDto? FindWithDetailsById(string itemType, string itemNo)
     {
         var query = _context.ItemHeaders
             .Where(iH => iH.ItemType == itemType && iH.ItemNo == itemNo)
             .Join(_context.ItemDetail,
                 iH => new { iH.ItemType, iH.ItemNo },
                 iD => new { iD.ItemType, iD.ItemNo },
-                (iH, iD) => new ItemWithDetailAndCurrencyGetDto
+                (iH, iD) => new ItemWithDetailGetDto
                 {
                     ItemType = iH.ItemType,
                     ItemNo = iH.ItemNo,
-                    ItemCategory = iH.ItemCategory,
+                    ItemCategory = _context.ItemCategory
+                    .Where(cat => cat.ItemCategoryName == iH.ItemCategory)
+                    .Select(cat => new ItemCategoryGetDto
+                    {
+                        ItemCategoryId = cat.ItemCategoryId,
+                        ItemCategoryName = cat.ItemCategoryName,
+                        ItemType = cat.ItemType,
+                    }).SingleOrDefault()!,
                     ItemName = iH.ItemName,
                     MItemName = iH.MItemName,
                     ItemDetails = new List<ItemDetailWithCurrencyGetDto>
@@ -196,17 +231,24 @@ public class ItemQueryRepository : IItemQueryRepository
         return query;
     }
 
-    public IQueryable<ItemWithDetailAndCurrencyGetDto?> FindWithDetailsByIdQuery(string itemType, string itemNo)
+    public IQueryable<ItemWithDetailGetDto?> FindWithDetailsByIdQuery(string itemType, string itemNo)
     {
         // left join query
         var query = _context.ItemHeaders
             .Where(iH => iH.ItemType == itemType
                 && iH.ItemNo == itemNo)
-            .Select(iH => new ItemWithDetailAndCurrencyGetDto
+            .Select(iH => new ItemWithDetailGetDto
             {
                 ItemType = iH.ItemType,
                 ItemNo = iH.ItemNo,
-                ItemCategory = iH.ItemCategory,
+                ItemCategory = _context.ItemCategory
+                    .Where(cat => cat.ItemCategoryName == iH.ItemCategory)
+                    .Select(cat => new ItemCategoryGetDto
+                    {
+                        ItemCategoryId = cat.ItemCategoryId,
+                        ItemCategoryName = cat.ItemCategoryName,
+                        ItemType = cat.ItemType,
+                    }).SingleOrDefault()!,
                 ItemName = iH.ItemName,
                 MItemName = iH.MItemName,
                 ItemDetails = _context.ItemDetail
@@ -241,7 +283,14 @@ public class ItemQueryRepository : IItemQueryRepository
         //         {
         //             ItemType = iH.ItemType,
         //             ItemNo = iH.ItemNo,
-        //             ItemCategory = iH.ItemCategory,
+        //             ItemCategory = _context.ItemCategory
+        //                 .Where(cat => cat.ItemCategoryName == iH.ItemCategory)
+        //                 .Select(cat => new ItemCategoryGetDto
+        //                 {
+        //                     ItemCategoryId = cat.ItemCategoryId,
+        //                     ItemCategoryName = cat.ItemCategoryName,
+        //                     ItemType = cat.ItemType,
+        //                 }).SingleOrDefault()!,
         //             ItemName = iH.ItemName,
         //             MItemName = iH.MItemName,
         //             ItemDetails = _context.ItemDetail

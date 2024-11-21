@@ -9,7 +9,7 @@ public interface IItemService
     // Task<List<ItemWithDetailGetDto>> FindAllItemsAsync();
 
     // Find (Item + Detail + Currency + Category)
-    Task<List<ItemWithDetailAndCurrencyGetDto>?> FindAllItemsWithDetails();
+    Task<List<ItemWithDetailGetDto>?> FindAllItemsWithDetails();
 
     // Find (Item + Detail) + Currency
     // Task<List<ItemWithDetailAndCurrencyGetDto>> FindAllItemsWithCurrencyAsync();
@@ -17,14 +17,14 @@ public interface IItemService
     // Find (Item + Detail) by Type
 
     // Find (Item + Detail) by Id
-    Task<ItemWithDetailAndCurrencyGetDto?> FindItemByIdAsync(string itemType,
+    Task<ItemWithDetailGetDto?> FindItemByIdAsync(string itemType,
                                                     string itemNo);
 
     // Save (Item), ITEM ONLY
     // ???
 
     // Save (Item + Detail)
-    Task<ItemWithDetailAndCurrencyGetDto> SaveItemAsync(ItemWithDetailCreateDto dto);
+    Task<ItemWithDetailGetDto> SaveItemAsync(ItemWithDetailCreateDto dto);
 
     // Update (Item + Detail)
     Task<ItemWithDetailGetDto> UpdateItemByIdAsync(

@@ -19,37 +19,29 @@ public class ItemsController : ControllerBase
     }
 
     [HttpPost("v1/items")]
-    [ProducesResponseType<ItemWithDetailAndCurrencyGetDto>(StatusCodes.Status201Created)]
+    [ProducesResponseType<ItemWithDetailGetDto>(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> Create_ItemWithDetail_Async([FromBody] ItemWithDetailCreateDto requestBody)
+    public async Task<IActionResult> Create_Item_Async([FromBody] ItemWithDetailCreateDto requestBody)
     {
-        var result = await _itemService.SaveItemAsync(requestBody);
+        ItemWithDetailGetDto? result = await _itemService
+            .SaveItemAsync(requestBody);
 
-        if (result != null)
-        {
-            return Ok(result);
-        }
-
-        throw new Exception("Controller::POST: exception occured.");
+        return Ok(result);
     }
 
     [HttpPatch("v1/items/type/{itemType}/code/{itemNo}")]
     [ProducesResponseType<ItemWithDetailGetDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> Update_ItemWithDetail_Async(string itemType,
+    public async Task<IActionResult> Update_Item_Async(string itemType,
                                                             string itemNo,
                                                             ItemWithDetailUpdateDto requestBody)
     {
-        var result = await _itemService.UpdateItemByIdAsync(itemType, itemNo, requestBody);
+        ItemWithDetailGetDto? result = await _itemService
+            .UpdateItemByIdAsync(itemType, itemNo, requestBody);
 
-        if (result != null)
-        {
-            return Ok(result);
-        }
-        // 400, 500
-        throw new Exception("Controller::PATCH: exception occured.");
+        return Ok(result);
     }
 
     [HttpDelete("v1/items/type/{itemType}/code/{itemNo}")]
@@ -71,7 +63,7 @@ public class ItemsController : ControllerBase
     [HttpGet("v1/items/type/{itemType}/code/{itemNo}")]
     [ProducesResponseType<ItemWithDetailGetDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetItem_ById_V1_Async(string itemType, string itemNo)
+    public async Task<IActionResult> Get_Item_ById_V1_Async(string itemType, string itemNo)
     {
         var result = await _itemService.FindItemByIdAsync(itemType, itemNo);
         if (result == null)
@@ -90,8 +82,8 @@ public class ItemsController : ControllerBase
     // }
 
     [HttpGet("v1/items")]
-    [ProducesResponseType<IEnumerable<ItemWithDetailAndCurrencyGetDto>>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get_ItemsWithCurrency_V1_Async()
+    [ProducesResponseType<IEnumerable<ItemWithDetailGetDto>>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> Get_Items_V1_Async()
     {
         // TODOs: pagination, filters
         var result = await Task.Run(() => _itemService.FindAllItemsWithDetails());

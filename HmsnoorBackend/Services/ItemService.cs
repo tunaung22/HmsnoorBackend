@@ -39,24 +39,25 @@ public class ItemService : IItemService
     /*
     * Save (Item + Detail)
     */
-    public async Task<ItemWithDetailAndCurrencyGetDto> SaveItemAsync(
-                                                ItemWithDetailCreateDto createDto)
+    public async Task<ItemWithDetailGetDto> SaveItemAsync(
+                                            ItemWithDetailCreateDto createDto)
     {
-        await using var transaction = await _context.Database.BeginTransactionAsync();
+        await using var transaction = await _context.Database
+            .BeginTransactionAsync();
 
         try
         {
             // Extract createDto into different enities
             var iHeader = ItemMapper.ToItemHeaderEntity(createDto);
-            var iDetails = ItemMapper.ToItemDetailEntityList(createDto);
+            var iDetailsList = ItemMapper.ToItemDetailEntityList(createDto);
 
             var iHeaderSave = await _itemRepo.SaveAsync(iHeader);
 
-            iDetails.ForEach(async i =>
+            iDetailsList.ForEach(async detailItem =>
             {
-                var effectedRow = await _itemDetailRepo.SaveAsync(i);
+                var effectedRow = await _itemDetailRepo.SaveAsync(detailItem);
                 if (effectedRow == 0)
-                    throw new Exception("Insert process for Item failed");
+                    throw new Exception("Insert item detail failed");
             });
 
 
@@ -94,10 +95,8 @@ public class ItemService : IItemService
 
             var finalResult = await FindItemByIdAsync(
                 createDto.ItemType,
-                createDto.ItemNo);
-
-            if (finalResult == null)
-                throw new Exception("Exception at retrieving created item.");
+                createDto.ItemNo)
+                ?? throw new Exception("Exception at retrieving created item.");
 
             // ===== TRANSACTION COMMIT =====
             await transaction.CommitAsync();
@@ -117,9 +116,9 @@ public class ItemService : IItemService
      * Update (Item + Detail)
      */
     public Task<ItemWithDetailGetDto> UpdateItemByIdAsync(
-                                                string itemType,
-                                                string itemNo,
-                                                ItemWithDetailUpdateDto dto)
+                                        string itemType,
+                                        string itemNo,
+                                        ItemWithDetailUpdateDto updateDto)
     {
         throw new NotImplementedException();
     }
@@ -148,8 +147,9 @@ public class ItemService : IItemService
     /// <param name="itemType"></param>
     /// <param name="itemNo"></param>
     /// <returns>ItemWithDetailAndCurrencyGetDto?</returns>
-    public async Task<ItemWithDetailAndCurrencyGetDto?> FindItemByIdAsync(string itemType,
-                                                                string itemNo)
+    public async Task<ItemWithDetailGetDto?> FindItemByIdAsync(
+                                                            string itemType,
+                                                            string itemNo)
     {
         // var item = _itemQueryRepo.FindWithDetailsById(itemType, itemNo);
         // return Task.FromResult(item);
@@ -198,7 +198,7 @@ public class ItemService : IItemService
     //     }
     // }
 
-    public async Task<List<ItemWithDetailAndCurrencyGetDto>?> FindAllItemsWithDetails()
+    public async Task<List<ItemWithDetailGetDto>?> FindAllItemsWithDetails()
     {
         // var items = _itemQueryRepo.FindAllWithDetails();
         var items = await _itemQueryRepo.FindAllWithDetailsQuery().ToListAsync();
