@@ -5,8 +5,8 @@ using HmsnoorBackend.Exceptions;
 using HmsnoorBackend.Middlewares.Exceptions;
 using HmsnoorBackend.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using HmsnoorBackend.Interfaces.Repositories;
-using HmsnoorBackend.Interfaces.Services;
+using HmsnoorBackend.Services.Interfaces;
+using HmsnoorBackend.Repositories.Interfaces;
 
 namespace HmsnoorBackend.Services;
 

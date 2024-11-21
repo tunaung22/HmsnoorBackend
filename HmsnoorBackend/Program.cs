@@ -1,17 +1,17 @@
 using System.Text.Json;
 using HmsnoorBackend.Data;
-using HmsnoorBackend.Interfaces.QueryRepositories;
-using HmsnoorBackend.Interfaces.Repositories;
-using HmsnoorBackend.Interfaces.Services;
+using HmsnoorBackend.QueryRepositories.Interfaces;
 using HmsnoorBackend.Middlewares;
 using HmsnoorBackend.QueryRepositories;
-using HmsnoorBackend.Repositories;
-using HmsnoorBackend.Services;
 using HmsnoorBackend.Utils;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using HmsnoorBackend.Repositories.Interfaces;
+using HmsnoorBackend.Repositories;
+using HmsnoorBackend.Services.Interfaces;
+using HmsnoorBackend.Services;
 
 namespace HmsnoorBackend;
 
@@ -81,10 +81,12 @@ public class Program
         // ========== Register services and repositories =======================
         // QueryRepository Layer
         builder.Services.AddScoped<IItemQueryRepository, ItemQueryRepository>();
+        builder.Services.AddScoped<ISaleQueryRepository, SaleQueryReository>();
         // Repository Layer
         builder.Services.AddScoped<IUserGroupRepository, UserGroupRepository>();
         builder.Services.AddScoped<IUserAccountRepository, UserAccountRepository>();
         builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+        builder.Services.AddScoped<IItemCategoryRepository, ItemCategoryRepository>();
         builder.Services.AddScoped<IItemRepository, ItemRepository>();
         builder.Services.AddScoped<IItemDetailRepository, ItemDetailRepository>();
         builder.Services.AddScoped<ISaleInvoiceRepository, SaleInvoiceRepository>();
@@ -93,6 +95,7 @@ public class Program
         builder.Services.AddScoped<IUserGroupService, UserGroupService>();
         builder.Services.AddScoped<IUserAccountService, UserAccountService>();
         builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+        builder.Services.AddScoped<IItemCategoryService, ItemCategoryService>();
         builder.Services.AddScoped<IItemService, ItemService>();
         builder.Services.AddScoped<ISaleInvoiceService, SaleInvoiceService>();
         builder.Services.AddScoped<ISaleItemService, SaleItemService>();

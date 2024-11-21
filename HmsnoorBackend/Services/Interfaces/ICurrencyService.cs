@@ -1,6 +1,6 @@
 using HmsnoorBackend.Dtos;
 
-namespace HmsnoorBackend.Interfaces.Services;
+namespace HmsnoorBackend.Services.Interfaces;
 
 public interface ICurrencyService
 {

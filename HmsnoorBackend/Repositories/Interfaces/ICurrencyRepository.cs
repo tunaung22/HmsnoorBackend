@@ -1,6 +1,6 @@
 using HmsnoorBackend.Data.Models;
 
-namespace HmsnoorBackend.Interfaces.Repositories;
+namespace HmsnoorBackend.Repositories.Interfaces;
 
 public interface ICurrencyRepository
 {

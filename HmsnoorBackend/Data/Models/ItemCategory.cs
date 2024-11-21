@@ -6,7 +6,7 @@ public partial class ItemCategory
 {
     public string ItemCategoryId { get; set; } = null!;
 
-    public string? ItemCategory1 { get; set; }
+    public string? ItemCategoryName { get; set; }
 
     public string? ItemType { get; set; }
 }

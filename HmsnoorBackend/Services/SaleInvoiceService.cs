@@ -4,8 +4,10 @@ using HmsnoorBackend.Dtos.DtoMappers;
 using HmsnoorBackend.Middlewares.Exceptions;
 using HmsnoorBackend.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using HmsnoorBackend.Interfaces.Repositories;
-using HmsnoorBackend.Interfaces.Services;
+using HmsnoorBackend.Services.Interfaces;
+using HmsnoorBackend.Repositories.Interfaces;
+using HmsnoorBackend.QueryRepositories.Interfaces;
+using HmsnoorBackend.Data.Models.Filters;
 
 namespace HmsnoorBackend.Services;
 
@@ -13,28 +15,64 @@ public class SaleInvoiceService : ISaleInvoiceService
 {
     private readonly HmsnoorDbContext _context;
     private readonly ILogger<SaleInvoiceService> _logger;
+
+    private readonly ISaleQueryRepository _saleQueryRepo;
     private readonly ISaleInvoiceRepository _invoiceRepo;
     private readonly ISaleItemRepository _invoiceItemRepo;
 
     public SaleInvoiceService(
         HmsnoorDbContext context,
         ILogger<SaleInvoiceService> logger,
+        ISaleQueryRepository saleQueryRepo,
         ISaleInvoiceRepository invoiceRepo,
         ISaleItemRepository invoiceItemRepo)
     {
         _context = context;
         _logger = logger;
+        _saleQueryRepo = saleQueryRepo;
         _invoiceRepo = invoiceRepo;
         _invoiceItemRepo = invoiceItemRepo;
     }
 
+    // =============== Invoice + Sale Items ====================================
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="saleType"></param>
+    /// <param name="page"></param>
+    /// <param name="show"></param>
+    /// <returns></returns>
+    public async Task<List<InvoiceWithItemsGetDto>> FindAll_InvoiceWithDetail_Async(
+        string? saleType, PaginationFilter filter)
+    {
+        try
+        {
+            var query = _saleQueryRepo
+                .FindAllWithdetails()
+                .Where(x => x.SalesType == saleType)
+                // Pagination
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize);
+            // Sorting
+            // query.OrderBy(i => i.InvoiceDate);
 
-    // =============== Invoice + Sale Items ==================================================
+            var invoices = await query.ToListAsync() ?? [];
+            return invoices;
+        }
+        catch (System.Exception)
+        {
+            // log
+            throw;
+        }
+    }
+
+    // =============== Invoice + Sale Items ====================================
     /// <summary>
     /// Find All Invoices (Invoice + Invoice Items)
     /// ** can be filter by Sale Type
     /// </summary>
     /// <returns></returns>
+    [Obsolete("This method is deprecated. Use FindAll_Invoice_2_Async instead.", false)]
     public async Task<List<InvoiceWithItemsGetDto>> FindAll_Invoice_Async(string? saleType)
     {
         List<InvoiceWithItemsGetDto> invoices = [];

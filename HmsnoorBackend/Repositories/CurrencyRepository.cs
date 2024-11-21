@@ -2,7 +2,7 @@ using HmsnoorBackend.Data;
 using HmsnoorBackend.Middlewares.Exceptions;
 using HmsnoorBackend.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using HmsnoorBackend.Interfaces.Repositories;
+using HmsnoorBackend.Repositories.Interfaces;
 
 namespace HmsnoorBackend.Repositories;
 
@@ -20,13 +20,14 @@ public class CurrencyRepository : ICurrencyRepository
     {
         // var query = _context.Currency;
         var query = _context.Currency
-        .OrderBy(c => c.CurrencyId)
+            .OrderBy(c => c.CurrencyId)
             .Select(c => new Currency
             {
                 CurrencyId = c.CurrencyId,
                 CurrencyDescription = c.CurrencyDescription,
                 CurrencyNotation = c.CurrencyNotation
             });
+
         return query;
     }
 
@@ -40,6 +41,7 @@ public class CurrencyRepository : ICurrencyRepository
                     CurrencyId = e.CurrencyId,
                     CurrencyDescription = e.CurrencyDescription
                 });
+
         return query;
     }
 

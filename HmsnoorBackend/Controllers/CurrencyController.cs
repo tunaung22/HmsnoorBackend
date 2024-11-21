@@ -1,8 +1,7 @@
 using HmsnoorBackend.Dtos;
 using HmsnoorBackend.Exceptions;
-using HmsnoorBackend.Interfaces.Services;
 using HmsnoorBackend.Middlewares.Exceptions;
-using HmsnoorBackend.Services;
+using HmsnoorBackend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HmsnoorBackend.Controllers;
@@ -22,7 +21,7 @@ public class CurrencyController : ControllerBase
         _currencyService = currencyService;
     }
 
-    [HttpPost("/v1/currencies")]
+    [HttpPost("v1/currencies")]
     [ProducesResponseType<CurrencyGetDto>(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -39,7 +38,7 @@ public class CurrencyController : ControllerBase
         return BadRequest();
     }
 
-    [HttpPatch("/v1/currencies")]
+    [HttpPatch("v1/currencies")]
     [ProducesResponseType<CurrencyGetDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -63,7 +62,7 @@ public class CurrencyController : ControllerBase
         return BadRequest();
     }
 
-    [HttpDelete("/v1/currencies")]
+    [HttpDelete("v1/currencies")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -89,7 +88,7 @@ public class CurrencyController : ControllerBase
         throw new ArgumentException("Invalid arguement for currency id");
     }
 
-    [HttpGet("/v1/currencies/{currencyId}")]
+    [HttpGet("v1/currencies/{currencyId}")]
     [ProducesResponseType<CurrencyGetDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get_Currency_byId_Async(int currencyId)
@@ -109,7 +108,7 @@ public class CurrencyController : ControllerBase
         throw new ArgumentException("Invalid arguement for currency id");
     }
 
-    [HttpGet("/v1/currencies")]
+    [HttpGet("v1/currencies")]
     [ProducesResponseType<IEnumerable<CurrencyGetDto>>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Get_AllCurrency_Async()

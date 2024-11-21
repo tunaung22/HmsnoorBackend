@@ -1,30 +1,30 @@
 using HmsnoorBackend.Dtos;
 
-namespace HmsnoorBackend.Interfaces.Services;
+namespace HmsnoorBackend.Services.Interfaces;
 
 public interface IItemService
 {
     // =============== Item + Detail ========================================
     // Find (Item + Detail)
-    Task<List<ItemWithDetailGetDto>> FindAllItemsAsync();
+    // Task<List<ItemWithDetailGetDto>> FindAllItemsAsync();
 
     // Find (Item + Detail + Currency + Category)
-    List<ItemWithDetailAndCurrencyGetDto>? FindAllItemsWithDetails();
+    Task<List<ItemWithDetailAndCurrencyGetDto>?> FindAllItemsWithDetails();
 
     // Find (Item + Detail) + Currency
-    Task<List<ItemWithDetailAndCurrencyGetDto>> FindAllItemsWithCurrencyAsync();
+    // Task<List<ItemWithDetailAndCurrencyGetDto>> FindAllItemsWithCurrencyAsync();
 
     // Find (Item + Detail) by Type
 
     // Find (Item + Detail) by Id
-    Task<ItemWithDetailGetDto?> FindItemByIdAsync(string itemType,
+    Task<ItemWithDetailAndCurrencyGetDto?> FindItemByIdAsync(string itemType,
                                                     string itemNo);
 
     // Save (Item), ITEM ONLY
     // ???
 
     // Save (Item + Detail)
-    Task<ItemWithDetailGetDto> SaveItemAsync(ItemWithDetailCreateDto dto);
+    Task<ItemWithDetailAndCurrencyGetDto> SaveItemAsync(ItemWithDetailCreateDto dto);
 
     // Update (Item + Detail)
     Task<ItemWithDetailGetDto> UpdateItemByIdAsync(

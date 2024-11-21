@@ -1,6 +1,6 @@
 using HmsnoorBackend.Data;
 using HmsnoorBackend.Data.Models;
-using HmsnoorBackend.Interfaces.Repositories;
+using HmsnoorBackend.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace HmsnoorBackend.Repositories;

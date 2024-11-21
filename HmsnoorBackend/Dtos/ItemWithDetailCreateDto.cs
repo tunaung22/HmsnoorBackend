@@ -1,10 +1,15 @@
 namespace HmsnoorBackend.Dtos;
 
-/*
+/* sample
     {
         "itemNo": "M001",
-        "itemType": "Beverage",
-        "itemCategory": "Beverage",
+        "itemType": "Restaurant",
+        "itemCategory": 
+        {
+            "itemCategoryId": "101",
+            "itemCategoryName": "Restaurant",
+            "itemType": "Beverage"
+        },
         "itemName": "Papaya Juice",
         "mItemName": "PPY-J",
         "items": [
@@ -17,11 +22,10 @@ namespace HmsnoorBackend.Dtos;
  */
 public class ItemWithDetailCreateDto
 {
-    public String ItemNo { get; set; } = null!;
-    public String ItemType { get; set; } = null!;
-    public String? ItemCategory { get; set; }
-    public String ItemName { get; set; } = null!;
-    public String? MItemName { get; set; }
+    public string ItemNo { get; set; } = null!;
+    public string ItemType { get; set; } = null!;
+    public string ItemCategory { get; set; } = null!;
+    public string ItemName { get; set; } = null!;
+    public string? MItemName { get; set; }
     public List<ItemDetailCreateDto> ItemDetails { get; set; } = [];
-
 }

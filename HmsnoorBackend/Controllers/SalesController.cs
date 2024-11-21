@@ -1,11 +1,11 @@
+using HmsnoorBackend.Data.Models.Filters;
 using HmsnoorBackend.Dtos;
-using HmsnoorBackend.Interfaces.Services;
-using HmsnoorBackend.Services;
+using HmsnoorBackend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HmsnoorBackend.Controllers;
 
-[Route("api")]
+[Route("api/")]
 [ApiController]
 public class SalesController : ControllerBase
 {
@@ -20,7 +20,7 @@ public class SalesController : ControllerBase
         _saleInvoiceService = saleInvoiceService;
     }
 
-    [HttpPost("/v1/sales")]
+    [HttpPost("v1/sales")]
     [ProducesResponseType<InvoiceWithItemsGetDto>(StatusCodes.Status201Created)]
     public async Task<IActionResult> Create_SaleInvoice_Async([FromBody] InvoiceWithItemsCreateDto requestBody)
     {
@@ -28,7 +28,7 @@ public class SalesController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPatch("/v1/sales/{invoiceNo}")]
+    [HttpPatch("v1/sales/{invoiceNo}")]
     [ProducesResponseType<InvoiceWithItemsGetDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -38,7 +38,7 @@ public class SalesController : ControllerBase
         return Ok(updatedInvoice);
     }
 
-    [HttpDelete("/v1/sales/{invoiceNo}")]
+    [HttpDelete("v1/sales/{invoiceNo}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -53,7 +53,7 @@ public class SalesController : ControllerBase
         throw new Exception("");
     }
 
-    [HttpGet("/v1/sales/{invoiceNo}")]
+    [HttpGet("v1/sales/{invoiceNo}")]
     [ProducesResponseType<InvoiceWithItemsGetDto>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get_SaleInvoice_ById_Async(string invoiceNo)
@@ -69,16 +69,21 @@ public class SalesController : ControllerBase
         return NotFound();
     }
 
-    [HttpGet("/v1/sales")]
+    [HttpGet("v1/sales")]
     [ProducesResponseType<IEnumerable<InvoiceWithItemsGetDto>>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get_All_Async([FromQuery(Name = "type")] string type)
+    public async Task<IActionResult> Get_All_SaleInvoices(
+        [FromQuery] string saleType,
+        [FromQuery] PaginationFilter filter)
     {
         // if (string.IsNullOrEmpty(HttpContext.Request.Query["type"].ToString()))
         // {
         //     return BadRequest("The 'type' query parameter is required.");
         // }
 
-        var result = await _saleInvoiceService.FindAll_Invoice_Async(type);
+        var result = await _saleInvoiceService
+            .FindAll_InvoiceWithDetail_Async(
+                saleType,
+                new PaginationFilter(filter.PageNumber, filter.PageSize));
 
         return Ok(result);
 

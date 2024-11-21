@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace HmsnoorBackend.ExceptionHandlers;
+namespace HmsnoorBackend.Middlewares;
 
 public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> _logger) : IExceptionHandler
 {
-    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(HttpContext httpContext,
+                                            Exception exception,
+                                            CancellationToken cancellationToken)
     {
         string ErrorCode = string.Empty;
 
@@ -52,7 +54,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> _logger) : I
         error.Code = ErrorCode;
         error.Message = exception.Message;
         error.Url = httpContext.Request.Path;
-        error.Details = exception.InnerException?.Message ?? "Details not avaiable";
+        error.Details = exception.InnerException?.Message ?? "Error details not avaiable";
 
         _logger.LogError("Exception:: {problemDetail}", error);
 
