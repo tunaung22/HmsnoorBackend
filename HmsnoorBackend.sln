@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HmsnoorBackend", "HmsnoorBackend\HmsnoorBackend.csproj", "{B11588A9-2BEC-4CEA-9498-7CFA11F77F4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HmsnoorBackend.Tests", "HmsnoorBackend.Tests\HmsnoorBackend.Tests.csproj", "{B1F8277A-44C9-40FE-AB89-4376B7F450CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HmsnoorBackend.UnitTests", "HmsnoorBackend.UnitTests\HmsnoorBackend.UnitTests.csproj", "{C64D95C1-47F6-44C1-BCC1-F0CAA7F286C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{B11588A9-2BEC-4CEA-9498-7CFA11F77F4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B11588A9-2BEC-4CEA-9498-7CFA11F77F4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B11588A9-2BEC-4CEA-9498-7CFA11F77F4D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B1F8277A-44C9-40FE-AB89-4376B7F450CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1F8277A-44C9-40FE-AB89-4376B7F450CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1F8277A-44C9-40FE-AB89-4376B7F450CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1F8277A-44C9-40FE-AB89-4376B7F450CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C64D95C1-47F6-44C1-BCC1-F0CAA7F286C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C64D95C1-47F6-44C1-BCC1-F0CAA7F286C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C64D95C1-47F6-44C1-BCC1-F0CAA7F286C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C64D95C1-47F6-44C1-BCC1-F0CAA7F286C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
