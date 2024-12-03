@@ -143,6 +143,14 @@ public class ItemQueryRepository : IItemQueryRepository
                     }).ToList()
             });
 
+        /* INNER JOIN 
+         * exclude ItemHeader not present in ItemDetail
+         * More efficient
+         * Note** item header got duplicate rows
+         *        when it has multiple item detail rows
+         *        (duplicated the same as number of item detail rows)
+         *  
+         */
         var innerJoinQuery = _context.ItemHeaders
             .OrderBy(iH => iH.ItemType)
             .ThenBy(iH => iH.ItemNo)
@@ -184,7 +192,7 @@ public class ItemQueryRepository : IItemQueryRepository
                         }).ToList()
                 });
 
-        return innerJoinQuery;
+        return leftJoinQuery;
     }
 
     public ItemWithDetailGetDto? FindWithDetailsById(string itemType, string itemNo)
