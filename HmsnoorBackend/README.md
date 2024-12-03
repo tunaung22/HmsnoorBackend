@@ -9,6 +9,7 @@
     DB_NAME=[database name]
     DB_USER=[databaes username]
     DB_PASSWORD=[database password]
+    ALLOWED_ORIGINS=http://127.0.0.1:5173,http://localhost:5173,https://127.0.0.1:5173,https://localhost:5173
 
 ## Dev Docs
 

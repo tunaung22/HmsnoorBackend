@@ -30,10 +30,13 @@ public class Program
             .CreateLogger();
         Log.Logger = log;
 
-        // ========== Builder ==================================================
+        // =====================================================================
+        // ========== BUILDER ==================================================
+        // =====================================================================
         var builder = WebApplication.CreateBuilder(args);
 
-        // ========== Services =================================================
+
+        // ========== CONTROLLERS ==============================================
         // builder.Services.AddControllersWithViews();
         builder.Services.AddControllers()
             // https://learn.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-8.0
@@ -47,6 +50,41 @@ public class Program
                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
+        // ========== CORS Policy ==============================================
+        /* Named Policy
+        // var HmsnoorAllowedPolicy = "HmsnoorAllowedPolicy";
+        // builder.Services.AddCors(options =>
+        // {
+        //     options.AddPolicy(HmsnoorAllowedPolicy, policy =>
+        //     {
+        //         policy.WithOrigins("http://127.0.0.1:5173",
+        //                             "http://localhost:5173",
+        //                             "https://127.0.0.1:5173",
+        //                             "https://localhost:5173")
+        //            .AllowAnyHeader()
+        //            .AllowAnyMethod();
+        //     });
+        // });
+        */
+        builder.Services.AddCors(options =>
+        {
+            // Use default policy
+            options.AddDefaultPolicy(policy =>
+            {
+                var allowedOrigins = builder.Configuration["ALLOWED_ORIGINS"]?.Split(",");
+                if (allowedOrigins != null)
+                    policy.WithOrigins(allowedOrigins)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                else
+                    policy.WithOrigins("http://127.0.0.1:5173",
+                                        "http://localhost:5173",
+                                        "https://127.0.0.1:5173",
+                                        "https://localhost:5173")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+            });
+        });
 
         // ========== Exception Handlers =======================================
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -77,7 +115,6 @@ public class Program
             // .LogTo(Console.WriteLine, LogLevel.Information);
         });
 
-
         // ========== Register services and repositories =======================
         // QueryRepository Layer
         builder.Services.AddScoped<IItemQueryRepository, ItemQueryRepository>();
@@ -101,7 +138,9 @@ public class Program
         builder.Services.AddScoped<ISaleItemService, SaleItemService>();
         // builder.Logging.AddJsonConsole();
 
-        // ========== App ======================================================
+        // =====================================================================
+        // ========== APPLICATION ==============================================
+        // =====================================================================
         var app = builder.Build();
 
         // ========== Configure the HTTP request pipeline. =====================
@@ -131,6 +170,11 @@ public class Program
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "HmsnoorAPI V1");
         });
+
+        // app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+        // app.UseCors(HmsnoorAllowedPolicy);
+        app.UseCors();
+
 
         app.UseAuthorization();
 
