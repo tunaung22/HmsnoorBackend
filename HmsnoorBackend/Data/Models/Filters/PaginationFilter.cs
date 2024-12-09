@@ -1,25 +1,24 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace HmsnoorBackend.Data.Models.Filters;
 
 public class PaginationFilter
 {
-    public PaginationFilter()
-    {
-        PageNumber = 1;
-        PageSize = 10;
-    }
+    [Required]
+    [Range(1, int.MaxValue, ErrorMessage = "PageNumber must be present and greater than 0")]
+    public int PageNumber { get; set; }
+
+    [Required]
+    [Range(1, int.MaxValue, ErrorMessage = "PageSize must be present and greater than 0")]
+    public int PageSize { get; set; }
+
+    public PaginationFilter() { }
 
     public PaginationFilter(int pageNumber, int pageSize)
     {
-        PageNumber = pageNumber < 1 ? 1 : pageNumber;
-        PageSize = pageSize < 10 ? 10 : pageSize;
+        PageNumber = pageNumber;
+        PageSize = pageSize;
     }
-
-
-
-    public int PageNumber { get; set; }
-    public int PageSize { get; set; }
-
 
 }

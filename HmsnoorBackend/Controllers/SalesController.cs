@@ -1,6 +1,7 @@
 using HmsnoorBackend.Data.Models.Filters;
 using HmsnoorBackend.Dtos;
 using HmsnoorBackend.Services.Interfaces;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HmsnoorBackend.Controllers;
@@ -72,25 +73,21 @@ public class SalesController : ControllerBase
     [HttpGet("v1/sales")]
     [ProducesResponseType<IEnumerable<InvoiceWithItemsGetDto>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> Get_All_SaleInvoices(
-        [FromQuery] string saleType,
+        [FromQuery] string? saleType,
         [FromQuery] PaginationFilter filter)
     {
-        // if (string.IsNullOrEmpty(HttpContext.Request.Query["type"].ToString()))
-        // {
-        //     return BadRequest("The 'type' query parameter is required.");
-        // }
+        // var result = await _saleInvoiceService
+        //     .FindAll_InvoiceWithDetail_Async(
+        //         saleType,
+        //         new PaginationFilter(filter.PageNumber, filter.PageSize));
 
         var result = await _saleInvoiceService
-            .FindAll_InvoiceWithDetail_Async(
+            .FindAll_InvoiceWithDetail_Paginated_Async(
                 saleType,
-                new PaginationFilter(filter.PageNumber, filter.PageSize));
+                new PaginationFilter(filter.PageNumber, filter.PageSize),
+                Request.GetDisplayUrl());
 
         return Ok(result);
-
-        // catch (ArgumentException e)
-        //     _logger.LogError("Argument Exception: {e}", e);
-        // catch (Exception e)
-        //     _logger.LogError("Exception: {e}", e);
     }
 
 

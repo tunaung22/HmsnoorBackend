@@ -8,6 +8,8 @@ using HmsnoorBackend.Services.Interfaces;
 using HmsnoorBackend.Repositories.Interfaces;
 using HmsnoorBackend.QueryRepositories.Interfaces;
 using HmsnoorBackend.Data.Models.Filters;
+using HmsnoorBackend.Dtos.SaleInvoices;
+using System.Web;
 
 namespace HmsnoorBackend.Services;
 
@@ -34,6 +36,85 @@ public class SaleInvoiceService : ISaleInvoiceService
         _invoiceItemRepo = invoiceItemRepo;
     }
 
+    public async Task<SaleInvoiceGetDTO> FindAll_InvoiceWithDetail_Paginated_Async(
+            string? saleType,
+            PaginationFilter filter,
+            string currentUrl)
+    {
+        try
+        {
+            // ===== Query =====
+            var query = _saleQueryRepo.FindAllWithdetails();
+            // ===== Filter =====
+            if (!string.IsNullOrEmpty(saleType))
+                query = query
+                    .OrderBy(i => i.InvoiceDate)
+                    .Where(x => x.SalesType == saleType);
+
+            // ===== Count =====
+            int totalItems = query.Count();
+
+            // ===== Pagination (Offset) =====
+            // https://learn.microsoft.com/en-us/ef/core/querying/pagination#offset-pagination
+            // ** Consider Keyset Pagination !!
+            query = query
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize);
+
+            // ========== Prepare URLs ===============
+            int totalPages = totalItems / filter.PageSize;
+            Uri? uri = new(currentUrl);
+            var queryParams = HttpUtility.ParseQueryString(uri.Query);
+            var previousPageUrl = string.Empty;
+            var nextPageUrl = string.Empty;
+
+            if (queryParams.Count > 0)
+            {
+                if (filter.PageNumber <= 1)
+                { // is: first page (no previous, has next)
+                    var uriBuilder = new UriBuilder(uri)
+                    { Query = $"saleType={saleType}&pageSize={filter.PageSize}&pageNumber={filter.PageNumber + 1}" };
+
+                    nextPageUrl = uriBuilder.ToString();
+                }
+                else if (filter.PageNumber == totalPages)
+                { // is: last page, (has previous, no next)
+                    var uriBuilder = new UriBuilder(uri)
+                    { Query = $"saleType={saleType}&pageSize={filter.PageSize}&pageNumber={filter.PageNumber - 1}" };
+
+                    previousPageUrl = uriBuilder.ToString();
+                }
+                else
+                { // is middle, (has previous, has next)
+                    var previousPageUriBuilder = new UriBuilder(uri)
+                    { Query = $"saleType={saleType}&pageSize={filter.PageSize}&pageNumber={filter.PageNumber - 1}" };
+
+                    previousPageUrl = previousPageUriBuilder.ToString();
+
+                    var nextPageUriBuilder = new UriBuilder(uri)
+                    { Query = $"saleType={saleType}&pageSize={filter.PageSize}&pageNumber={filter.PageNumber + 1}" };
+
+                    nextPageUrl = nextPageUriBuilder.ToString();
+                }
+            }
+
+            return new SaleInvoiceGetDTO
+            {
+                TotalRecords = totalItems,
+                CurrentPage = filter.PageNumber > 1 ? filter.PageNumber : 1,
+                TotalPages = totalPages,
+                PreviousPage = previousPageUrl,
+                NextPage = nextPageUrl,
+                Content = await query.ToListAsync()
+            };
+        }
+        catch (System.Exception)
+        {
+            // log
+            throw;
+        }
+    }
+
     // =============== Invoice + Sale Items ====================================
     /// <summary>
     /// 
@@ -49,12 +130,16 @@ public class SaleInvoiceService : ISaleInvoiceService
         {
             var query = _saleQueryRepo
                 .FindAllWithdetails()
-                .Where(x => x.SalesType == saleType)
                 // Pagination
                 .Skip((filter.PageNumber - 1) * filter.PageSize)
                 .Take(filter.PageSize);
             // Sorting
             // query.OrderBy(i => i.InvoiceDate);
+
+            if (string.IsNullOrEmpty(saleType))
+            {
+                query.Where(x => x.SalesType == saleType);
+            }
 
             var invoices = await query.ToListAsync() ?? [];
             return invoices;
@@ -806,6 +891,9 @@ public class SaleInvoiceService : ISaleInvoiceService
     }
 
 
+    // public string ConstructQueryString(Uri uri)
+    // {
 
+    // }
 
 }

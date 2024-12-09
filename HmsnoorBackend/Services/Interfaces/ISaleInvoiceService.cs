@@ -1,5 +1,6 @@
 using HmsnoorBackend.Data.Models.Filters;
 using HmsnoorBackend.Dtos;
+using HmsnoorBackend.Dtos.SaleInvoices;
 
 namespace HmsnoorBackend.Services.Interfaces;
 
@@ -22,6 +23,11 @@ public interface ISaleInvoiceService
     // Find (Invoice + Invoice Items)
     [Obsolete("This method is deprecated. Use FindAll_Invoice_2_Async instead.", false)]
     Task<List<InvoiceWithItemsGetDto>> FindAll_Invoice_Async(string? saleType);
+
+    Task<SaleInvoiceGetDTO> FindAll_InvoiceWithDetail_Paginated_Async(
+        string? saleType,
+        PaginationFilter filter,
+        string currentUrl);
     Task<List<InvoiceWithItemsGetDto>> FindAll_InvoiceWithDetail_Async(string? saleType, PaginationFilter filter);
     // Find (Invoice + Invoice Item) by Type
     // Task<List<InvoiceWithItemsGetDto>> FindAllInvoiceByTypeAsync(string salesType);
