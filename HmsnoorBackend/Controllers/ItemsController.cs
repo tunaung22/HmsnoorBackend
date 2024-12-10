@@ -1,4 +1,5 @@
 using System;
+using HmsnoorBackend.Data.Models.Filters;
 using HmsnoorBackend.Dtos;
 using HmsnoorBackend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -83,10 +84,11 @@ public class ItemsController : ControllerBase
 
     [HttpGet("v1/items")]
     [ProducesResponseType<IEnumerable<ItemWithDetailGetDto>>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get_Items_V1_Async()
+    public async Task<IActionResult> Get_Items_V1_Async(
+        [FromQuery] PaginationFilter filter)
     {
-        // TODOs: pagination, filters
-        var result = await Task.Run(() => _itemService.FindAllItemsWithDetails());
+        // var result = await Task.Run(() => _itemService.FindAllItemsWithDetails());
+        var result = await _itemService.FindAll_Items_Paginated_Async(filter, Request);
 
         return Ok(result);
     }

@@ -1,8 +1,11 @@
 using System.Runtime.CompilerServices;
 using HmsnoorBackend.Data;
 using HmsnoorBackend.Data.Models;
+using HmsnoorBackend.Data.Models.Filters;
 using HmsnoorBackend.Dtos;
+using HmsnoorBackend.Dtos.Core;
 using HmsnoorBackend.Dtos.DtoMappers;
+using HmsnoorBackend.Dtos.ItemHeaders;
 using HmsnoorBackend.QueryRepositories.Interfaces;
 using HmsnoorBackend.Repositories.Interfaces;
 using HmsnoorBackend.Services.Interfaces;
@@ -287,6 +290,41 @@ public class ItemService : IItemService
     {
         return await _itemRepo.SaveItemHeaderAsync(requestBody);
 
+    }
+
+
+
+
+    public async Task<BasePagingDTO<ItemWithDetailGetDto>> FindAll_Items_Paginated_Async(
+        PaginationFilter filter,
+        HttpRequest request)
+    {
+        try
+        {
+            // ===== Query =====
+            var query = _itemQueryRepo.FindAllWithDetailsQuery();
+
+            // ===== Pagination (Offset) =====
+            // https://learn.microsoft.com/en-us/ef/core/querying/pagination#offset-pagination
+            // ** Consider Keyset Pagination !!
+            var resultList = await query
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToListAsync();
+
+            return PaginatedDTOMapper.CreatePagingDTO<ItemWithDetailGetDto>(
+                resultList,
+                request,
+                query.Count(),
+                filter.PageNumber,
+                filter.PageSize
+            );
+        }
+        catch (System.Exception)
+        {
+
+            throw;
+        }
     }
 
 }

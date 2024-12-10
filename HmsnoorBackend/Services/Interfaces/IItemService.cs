@@ -1,4 +1,7 @@
+using HmsnoorBackend.Data.Models.Filters;
 using HmsnoorBackend.Dtos;
+using HmsnoorBackend.Dtos.Core;
+using HmsnoorBackend.Dtos.ItemHeaders;
 
 namespace HmsnoorBackend.Services.Interfaces;
 
@@ -6,7 +9,10 @@ public interface IItemService
 {
     // =============== Item + Detail ========================================
     // Find (Item + Detail)
-    // Task<List<ItemWithDetailGetDto>> FindAllItemsAsync();
+    Task<BasePagingDTO<ItemWithDetailGetDto>> FindAll_Items_Paginated_Async(
+        PaginationFilter filter,
+        HttpRequest request
+    );
 
     // Find (Item + Detail + Currency + Category)
     Task<List<ItemWithDetailGetDto>?> FindAllItemsWithDetails();
