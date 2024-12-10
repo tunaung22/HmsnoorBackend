@@ -45,6 +45,7 @@ public class SaleInvoiceService : ISaleInvoiceService
         {
             // ===== Query =====
             var query = _saleQueryRepo.FindAllWithdetails();
+
             // ===== Filter =====
             if (!string.IsNullOrEmpty(saleType))
                 query = query
@@ -62,7 +63,7 @@ public class SaleInvoiceService : ISaleInvoiceService
                 .Take(filter.PageSize);
 
             // ========== Prepare URLs ===============
-            int totalPages = totalItems / filter.PageSize;
+            int totalPages = (int)Math.Ceiling((decimal)totalItems / filter.PageSize);
             Uri? uri = new(currentUrl);
             var queryParams = HttpUtility.ParseQueryString(uri.Query);
             var previousPageUrl = string.Empty;
