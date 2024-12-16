@@ -1,4 +1,4 @@
-# Endpoints
+# API Endpoints
 
     base: /api (?page=1&show=20)
 
